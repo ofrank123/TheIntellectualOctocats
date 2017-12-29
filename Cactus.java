@@ -20,4 +20,8 @@ public class Cactus extends Entity {
   public int getX() {
     return location[1];
   }
+
+  public int getY() {
+    return location[0];
+  }
 }

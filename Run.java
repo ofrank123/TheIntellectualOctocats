@@ -65,12 +65,20 @@ public class Run {
     }
   }
 
+  private static void cleanUp()
+    throws InterruptedException, IOException {
+    //Switch into cooked mode (wait for ENTER/RETURN key)
+    String[] cookedCmd = {"/bin/sh", "-c", "stty cooked </dev/tty"};
+    Runtime.getRuntime().exec(cookedCmd).waitFor();
+  }
+
+  //Entry point
   public static void main( String[] args )
-    throws InterruptedException {
+    throws InterruptedException, IOException {
 
     //start display and init player
     Display display = new Display();
-    player = new Player(10, 4, display);
+    player = new Player(8, 4, display);
 
     //make 2 cactuses
     Cactus cac1 = new Cactus(11, 96, display);
@@ -91,5 +99,7 @@ public class Run {
       }
       Thread.sleep(40);
     }
+
+    cleanUp(); //ensure that everything goes back to normal (e.g. raw mode vs cooked)
   }
 }
