@@ -49,7 +49,7 @@ public class Run {
       String[] rawCmd = {"/bin/sh", "-c", "stty raw </dev/tty"};
       Runtime.getRuntime().exec(rawCmd).waitFor();
 
-      if( System.in.available() > 0 ) { //check if there's anything to read
+      if( System.in.available() > 0 ) { //check if there's anything to read without blocking (thank the lord)
         inChar = System.in.read(); //if so, read it
         retVal = inChar == 32; //check if it's a space, and set retVal to true if it is
       }
