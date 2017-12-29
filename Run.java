@@ -78,7 +78,7 @@ public class Run {
 
     //start display and init player
     Display display = new Display();
-    player = new Player(8, 4, display);
+    player = new Player(10, 4, display);
 
     //make 2 cactuses
     Cactus cac1 = new Cactus(11, 96, display);
@@ -90,13 +90,17 @@ public class Run {
 
     //main game loop
     while(true) {
+      //game logic
       if(detectCollision()) //if there is a collision then stop the game
         break;
-      update(display);
-      tick++; //increment core
       if ( checkSpace() ){
-        tick += 10000; //placeholder to check functionality
+        //what happens if spacebar is pressed
       }
+      tick++; //increment score
+
+      //visuals
+      update(display);
+
       Thread.sleep(40);
     }
 
