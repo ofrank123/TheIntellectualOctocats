@@ -26,34 +26,6 @@ public class Run {
     }
   }
 
-  /*
-    IN PROGRESS KEYLISTNER
-    ====================================
-    We may need to open a new thread to listen for the keys
-    asynchrously.  Let me (Oliver) know if you have any
-    other ideas
-
-  private static boolean spaceDown()
-    throws IOException {
-    int inChar;
-
-    try {
-      //Switch into raw mode
-      String[] rawCmd = {"/bin/sh", "-c", "stty raw </dev/tty"};
-      Runtime.getRuntime().exec(rawCmd).waitFor();
-
-      //reads one byte of data from cmd line
-      inChar = System.in.read();
-
-      //Switch into cooked mode
-      String[] cookedCmd = {"/bin/sh", "-c", "stty cooked </dev/tty"};
-      Runtime.getRuntime().exec(cookedCmd).waitFor();
-      if (inChar == 32)
-    }
-  }
-  */
-
-
   private static boolean detectCollision() {
     for(Cactus cactus : cacti ) {
       if(player.colliding(cactus))
@@ -65,6 +37,32 @@ public class Run {
   private static void addC(Cactus cactus){
     cacti.add(cactus);
     allCacti.add(cactus);
+  }
+
+  private static boolean checkSpace()
+    throws InterruptedException {
+    try {
+      boolean retVal = false;
+      int inChar;
+
+      //Switch into raw mode (read single chars)
+      String[] rawCmd = {"/bin/sh", "-c", "stty raw </dev/tty"};
+      Runtime.getRuntime().exec(rawCmd).waitFor();
+
+      if( System.in.available() > 0 ) { //check if there's anything to read
+        inChar = System.in.read(); //if so, read it
+        retVal = inChar == 32; //check if it's a space, and set retVal to true if it is
+      }
+
+      //Switch into cooked mode (wait for ENTER/RETURN key)
+      String[] cookedCmd = {"/bin/sh", "-c", "stty cooked </dev/tty"};
+      Runtime.getRuntime().exec(cookedCmd).waitFor();
+
+      return retVal;
+    } catch (IOException e) { //catch any weird values, and let user know.  should continue running the game
+      System.out.println("Error: Input not valid");
+      return false;
+    }
   }
 
   public static void main( String[] args )
@@ -84,10 +82,13 @@ public class Run {
 
     //main game loop
     while(true) {
-      if(detectCollision())
+      if(detectCollision()) //if there is a collision then stop the game
         break;
       update(display);
-      tick++; //increment score
+      tick++; //increment core
+      if ( checkSpace() ){
+        tick += 10000; //placeholder to check functionality
+      }
       Thread.sleep(40);
     }
   }
