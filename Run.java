@@ -5,10 +5,12 @@ public class Run {
   private static ArrayList<Cactus> cacti = new ArrayList<>();
   private static ArrayList<Cactus> allCacti = new ArrayList<>();
   private static int tick;
+  private static int jumpD = 0;
   private static Player player;
   private static void drawDisplay(Display display) {
     System.out.println("[H[J"); //clear escape sequence
     System.out.println("SCORE: " + tick);
+    System.out.println("jumpD: " + jumpD);
     System.out.println(display); //print the display
   }
 
@@ -90,17 +92,24 @@ public class Run {
 
     //main game loop
     while(true) {
-      //game logic
+      //game should not continue (even by one update) if there is a collision
       if(detectCollision()) //if there is a collision then stop the game
         break;
-      if ( checkSpace() ){
-        //what happens if spacebar is pressed
-      }
-      tick++; //increment score
 
       //visuals
       update(display);
 
+      //Game logic
+
+      //what happens if spacebar is pressed
+      if ( (checkSpace() && jumpD == 0) || (0 < jumpD && jumpD <= 8) )
+        jumpD++;
+      else
+        jumpD = 0;
+
+      player.jump(jumpD);
+
+      tick++;
       Thread.sleep(40);
     }
 
