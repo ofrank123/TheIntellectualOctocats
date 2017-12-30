@@ -18,13 +18,15 @@ public class Player extends Entity {
   }
 
   public boolean colliding(Cactus cactus) {
-    return cactus.getX() == this.location[1] + 3 && this.location[0] > cactus.getY() - 4;
+    return (cactus.getX() == this.location[1] + 3 ||
+            cactus.getX() == this.location[1] + 2) &&
+      this.location[0] > cactus.getY() - 4;
   }
 
   public void jump(int jumpD) {
-    if(0 < jumpD && jumpD <= 3)
+    if((0 < jumpD && jumpD <= 3) || jumpD == 5)
       this.location[0] -= 1;
-    else if(6 < jumpD)
+    else if(10 == jumpD || jumpD >= 12)
       this.location[0] += 1;
   }
 }
