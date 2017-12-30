@@ -26,7 +26,7 @@ public class Player extends Entity {
   public void jump(int jumpD) {
     if((0 < jumpD && jumpD <= 3) || jumpD == 5)
       this.location[0] -= 1;
-    else if(10 == jumpD || jumpD >= 12)
+    else if(9 == jumpD || jumpD >= 11)
       this.location[0] += 1;
   }
 }

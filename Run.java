@@ -1,6 +1,27 @@
 import java.util.ArrayList;
 import java.io.IOException;
+/*
+  ================================================
+                 TERMINAL JUMPER
+                   VERSION 1.0
 
+                       by
+                  Oliver Frank,
+                Shayan Chowdhury,
+                 Piotr Cwalina
+  ================================================
+  A game similar to google chrome's dinosaur jump
+  game, where the player must time their jumps to
+  make it over cacti (and hopefully other objects
+  in later versions). This is only version 1 of
+  this project, and their will be many more
+  features to come, as well as improvement of the
+  core game mechanics.
+  ================================================
+  Liscenced under the GNU General Public License,
+  December 2017
+  ================================================
+ */
 public class Run {
   private static int tick; //total ticks
   private static int jumpD = 0; //jump delta, ticks since last jump
@@ -10,12 +31,12 @@ public class Run {
   private static void drawDisplay() {
     System.out.println("[H[J"); //clear escape sequence
     System.out.println("SCORE: " + tick);
-    System.out.println("jumpD: " + jumpD);
     System.out.println(display); //print the display
   }
 
   private static void update() {
     display.clearDisplay();
+    CHandler.spawnCactus();
     CHandler.updateCacti();
     player.draw();
     drawDisplay();
@@ -58,24 +79,24 @@ public class Run {
   public static void main( String[] args )
     throws InterruptedException, IOException {
 
-    //start display and init player
     display = new Display();
     player = new Player(10, 4, display);
-    CHandler = new CactusHandler();
+    CHandler = new CactusHandler(display);
 
     tick = 0; //init ticks/score
 
     //main game loop
     while(true) {
       //game should not continue (even by one update) if there is a collision
-      if(CHandler.detectCollision(player)) //if there is a collision then stop the game
+      if(CHandler.detectCollision(player)) { //if there is a collision then stop the game
         break;
+      }
 
       //visuals
       update();
 
       //what happens if spacebar is pressed
-      if ( (checkSpace() && jumpD == 0) || (0 < jumpD && jumpD <= 13) )
+      if ( (checkSpace() && jumpD == 0) || (0 < jumpD && jumpD <= 12) )
         jumpD++;
       else
         jumpD = 0;
@@ -83,10 +104,10 @@ public class Run {
       //Player jumps if jumpD is greater than 0
       player.jump(jumpD);
 
+
       tick++;
       Thread.sleep(40);
     }
-
     cleanUp(); //ensure that everything goes back to normal (e.g. raw mode vs cooked)
-  }
-}
+  } //end main()
+} //end class

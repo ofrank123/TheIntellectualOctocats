@@ -6,9 +6,15 @@ import java.util.ArrayList;
  */
 public class CactusHandler {
   private ArrayList<Cactus> cacti = new ArrayList<>();
-  private ArrayList<Cactus> allCacti = new ArrayList<>();
-
+  private Display display;
+  private int cactusD, nextCactus; //ticks since last cactus spawn, delta when next cac will be spawned
   //moves and draws cacti, and removes cacti that are out of bounds
+  public CactusHandler(Display display) {
+    this.display = display;
+    cactusD = 0;
+    nextCactus = (int) ((Math.random()*30) + 15);
+  }
+
   public void updateCacti() {
     int i;
     Cactus thisC;
@@ -28,10 +34,12 @@ public class CactusHandler {
     return false;
   }
 
-  //adds cacti to the lists of cacti
-  private void addC(Cactus cactus){
-    cacti.add(cactus);
-    allCacti.add(cactus);
+  public void spawnCactus() {
+    cactusD++;
+    if(cactusD == nextCactus) {
+      cacti.add(new Cactus(11, 96, display));
+      cactusD = 0;
+      nextCactus = (int) ((Math.random()*30) + 15);
+    }
   }
-
 }
