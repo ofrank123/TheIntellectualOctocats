@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Scanner;
 import java.io.IOException;
 /*
   ================================================
@@ -23,15 +24,62 @@ import java.io.IOException;
   ================================================
  */
 public class Run {
-  private static int tick; //total ticks
   private static int jumpD = 0; //jump delta, ticks since last jump
+  private static boolean running;
+
   private static Player player;
   private static Display display;
   private static CactusHandler CHandler;
-  private static void drawDisplay() {
-    System.out.println("[H[J"); //clear escape sequence
-    System.out.println("SCORE: " + tick);
-    System.out.println(display); //print the display
+
+  private static void newGame() {
+    //(Re)create game
+    display.init();
+    player.init(4, 10, display);
+    CHandler.init(display);
+  }
+
+  private static void playGame()
+    throws InterruptedException {
+    while(true) {
+      //game should not continue (even by one update) if there is a collision
+      if(CHandler.detectCollision(player)) { //if there is a collision then stop the game
+        break;
+      }
+      //visuals
+      update();
+      //what happens if spacebar is pressed
+      if ( (checkSpace() && jumpD == 0) || (0 < jumpD && jumpD <= 12) )
+        jumpD++;
+      else
+        jumpD = 0;
+
+      //Player jumps if jumpD is greater than 0
+      player.jump(jumpD);
+
+      //monitor updates per second
+      Thread.sleep(40);
+    }
+  }
+
+  //Clean up after the game
+  private static void endGame() {
+    jumpD = 0;
+
+    System.out.println("Would you like to keep playing (y/n)");
+    boolean answering = true;
+    while(answering) {
+      String ans = readString();
+      if(ans.equals("y")) {
+        running = true;
+        answering = false;
+      } else if(ans.equals("n")) {
+        running = false;
+        answering = false;
+      }
+      else
+        System.out.println("Invalid input, please enter y or n");
+    }
+
   }
 
   private static void update() {
@@ -39,7 +87,7 @@ public class Run {
     CHandler.spawnCactus();
     CHandler.updateCacti();
     player.draw();
-    drawDisplay();
+    System.out.println(display);
   }
 
   private static boolean checkSpace()
@@ -68,6 +116,11 @@ public class Run {
     }
   }
 
+  private static String readString() {
+    Scanner sc = new Scanner(System.in);
+    return sc.next();
+  }
+
   private static void cleanUp()
     throws InterruptedException, IOException {
     //Switch into cooked mode (wait for ENTER/RETURN key)
@@ -78,36 +131,23 @@ public class Run {
   //Entry point
   public static void main( String[] args )
     throws InterruptedException, IOException {
-
+    //instantiate the display, player, and cactus handler
     display = new Display();
-    player = new Player(10, 4, display);
+    player = new Player(4, 10, display);
     CHandler = new CactusHandler(display);
 
-    tick = 0; //init ticks/score
+    running = true;
 
-    //main game loop
-    while(true) {
-      //game should not continue (even by one update) if there is a collision
-      if(CHandler.detectCollision(player)) { //if there is a collision then stop the game
-        break;
-      }
-
-      //visuals
-      update();
-
-      //what happens if spacebar is pressed
-      if ( (checkSpace() && jumpD == 0) || (0 < jumpD && jumpD <= 12) )
-        jumpD++;
-      else
-        jumpD = 0;
-
-      //Player jumps if jumpD is greater than 0
-      player.jump(jumpD);
-
-
-      tick++;
-      Thread.sleep(40);
+    while(running) {
+      //init the game
+      newGame();
+      //run through the game once
+      playGame();
+      //cleanUp game, reset variables
+      endGame();
+      //running = false; //only play one game
     }
+
     cleanUp(); //ensure that everything goes back to normal (e.g. raw mode vs cooked)
   } //end main()
 } //end class

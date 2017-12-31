@@ -18,10 +18,10 @@ public class Cactus extends Entity {
   }
 
   public int getX() {
-    return location[1];
+    return location[0];
   }
 
   public int getY() {
-    return location[0];
+    return location[1];
   }
 }

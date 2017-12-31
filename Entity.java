@@ -22,17 +22,19 @@ public abstract class Entity {
   public void draw() {
     for(int i = 0; i < entMatrix.length; i++)
       for(int j = 0; j < entMatrix[i].length; j++) {
-        display.setLoc(location[0] + i, location[1] + j,
-                       entMatrix[i][j]);
+        display.setLoc( location[1] + i, location[0] + j,
+                        entMatrix[i][j]);
       }
   }
+
   public boolean outOfBounds() {
-    return location[1] <= 0 ||
-      (location[1] + entMatrix.length + 1) > 100;
+    return location[0] <= 0 ||
+      (location[0] + entMatrix.length + 1) > 100;
   }
-  public void move(int y, int x){
-    location[0] += y;
-    location[1] += x;
+
+  public void move(int x, int y){
+    location[0] += x;
+    location[1] += y;
     draw();
   }
 }
