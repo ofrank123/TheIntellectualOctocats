@@ -2,50 +2,47 @@ import java.util.ArrayList;
 
 /*
   Class deals with keeping track of, creating, and detecting
-  collisions for cacti.
+  collisions for cacti. nextE keeps track of when the next
+  cactus should be spawned
  */
-public class CactusHandler {
-  private ArrayList<Cactus> cacti = new ArrayList<>();
-  private Display display;
-  private int cactusD, nextCactus; //ticks since last cactus spawn, delta when next cac will be spawned
+public class CactusHandler extends EntityHandler {
+  //Inherits entities ArrayList, display, and nextE from EntityHandler
 
-  //moves and draws cacti, and removes cacti that are out of bounds
   public CactusHandler(Display display) {
     init(display);
   }
 
+  //Initialize the cactus handler
   public void init(Display display) {
     this.display = display;
-    cactusD = 0;
-    nextCactus = (int) ((Math.random()*30) + 15);
-    cacti.clear();
+    nextE = (int) ((Math.random()*30) + 15); //each cactus spawns between 15 and 45 ticks of one another
+    entities.clear(); //clears all cacti currently in list
   }
 
-  public void updateCacti() {
+  public void updateEntities() {
     int i;
     Cactus thisC;
-    for(i = 0; i < cacti.size(); i++) {
-      thisC = cacti.get(i);
+    for(i = 0; i < entities.size(); i++) {
+      thisC = (Cactus) entities.get(i);
       thisC.move(-1,0);
       thisC.draw();
       if(thisC.outOfBounds())
-        cacti.remove(thisC);
+        entities.remove(thisC);
     }
   }
 
   public boolean detectCollision(Player player) {
-    for( Cactus cactus: cacti )
-      if(player.colliding(cactus))
+    for( Entity cactus: entities )
+      if(player.colliding((Cactus) cactus))
         return true;
     return false;
   }
 
-  public void spawnCactus() {
-    cactusD++;
-    if(cactusD == nextCactus) {
-      cacti.add(new Cactus(97, 11, display));
-      cactusD = 0;
-      nextCactus = (int) ((Math.random()*30) + 15);
+  public void spawnEntity() {
+    nextE--;
+    if(nextE == 0) {
+      entities.add(new Cactus(97, 11, display));
+      nextE = (int) ((Math.random()*30) + 15);
     }
   }
 }

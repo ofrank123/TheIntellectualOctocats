@@ -1,6 +1,6 @@
 import java.util.ArrayList;
-import java.util.Scanner;
 import java.io.IOException;
+
 /*
   ================================================
                  TERMINAL JUMPER
@@ -15,7 +15,7 @@ import java.io.IOException;
   game, where the player must time their jumps to
   make it over cacti (and hopefully other objects
   in later versions). This is only version 1 of
-  this project, and their will be many more
+  this project, and there will be many more
   features to come, as well as improvement of the
   core game mechanics.
   ================================================
@@ -24,31 +24,38 @@ import java.io.IOException;
   ================================================
  */
 public class Run {
-  private static int jumpD = 0; //jump delta, ticks since last jump
-  private static boolean running;
+  private static int jumpD = 0; //jump delta, ticks since last jump, keeps track of place in jump
+  private static boolean running; //whether or not game is running
 
   private static Player player;
   private static Display display;
   private static CactusHandler CHandler;
 
+  //Actions to be performed at the start of each game
   private static void newGame() {
     //(Re)create game
-    display.init();
-    player.init(4, 10, display);
-    CHandler.init(display);
+    display.init(); //reinititialize the display
+    player.init(4, 10, display); //reinititialize the player
+    CHandler.init(display); //reinitialize the cactusHandler
   }
 
+  //main game functionality
   private static void playGame()
     throws InterruptedException {
+    //main game loop
     while(true) {
       //game should not continue (even by one update) if there is a collision
       if(CHandler.detectCollision(player)) { //if there is a collision then stop the game
         break;
       }
       //visuals
-      update();
-      //what happens if spacebar is pressed
-      if ( (checkSpace() && jumpD == 0) || (0 < jumpD && jumpD <= 12) )
+      display.clearDisplay(); //clear the display
+      CHandler.spawnEntity(); //Create new cacti if necessary
+      CHandler.updateEntities(); //move and draw cacti
+      player.draw(); //draw the player to the display matrix
+      System.out.println(display); //draw the display to the console
+      //Check if spacebar is pressed and not already jumping
+      if ( (IOTools.checkSpace() && jumpD == 0) || (0 < jumpD && jumpD <= 12) )
         jumpD++;
       else
         jumpD = 0;
@@ -63,62 +70,22 @@ public class Run {
 
   //Clean up after the game
   private static void endGame() {
-    jumpD = 0;
+    jumpD = 0; //reset jumpD
 
     System.out.println("Would you like to keep playing (y/n)");
     boolean answering = true;
-    while(answering) {
-      String ans = readString();
-      if(ans.equals("y")) {
+    while(answering) { //make sure question is answered properly before moving on
+      String ans = IOTools.readString(); //read from input
+      if(ans.equals("y")) { //continue playing
         running = true;
         answering = false;
-      } else if(ans.equals("n")) {
+      } else if(ans.equals("n")) { //stop playing
         running = false;
         answering = false;
       }
-      else
+      else //invalid input, ask question again
         System.out.println("Invalid input, please enter y or n");
     }
-
-  }
-
-  private static void update() {
-    display.clearDisplay();
-    CHandler.spawnCactus();
-    CHandler.updateCacti();
-    player.draw();
-    System.out.println(display);
-  }
-
-  private static boolean checkSpace()
-    throws InterruptedException {
-    try {
-      boolean retVal = false;
-      int inChar;
-
-      //Switch into raw mode (read single chars)
-      String[] rawCmd = {"/bin/sh", "-c", "stty raw </dev/tty"};
-      Runtime.getRuntime().exec(rawCmd).waitFor();
-
-      if( System.in.available() > 0 ) { //check if there's anything to read without blocking (thank the lord)
-        inChar = System.in.read(); //if so, read it
-        retVal = inChar == 32; //check if it's a space, and set retVal to true if it is
-      }
-
-      //Switch into cooked mode (wait for ENTER/RETURN key)
-      String[] cookedCmd = {"/bin/sh", "-c", "stty cooked </dev/tty"};
-      Runtime.getRuntime().exec(cookedCmd).waitFor();
-
-      return retVal;
-    } catch (IOException e) { //catch any weird values, and let user know.  should continue running the game
-      System.out.println("Error: Input not valid");
-      return false;
-    }
-  }
-
-  private static String readString() {
-    Scanner sc = new Scanner(System.in);
-    return sc.next();
   }
 
   private static void cleanUp()
@@ -137,7 +104,7 @@ public class Run {
     CHandler = new CactusHandler(display);
 
     running = true;
-
+    //run games until player says n
     while(running) {
       //init the game
       newGame();
@@ -148,6 +115,6 @@ public class Run {
       //running = false; //only play one game
     }
 
-    cleanUp(); //ensure that everything goes back to normal (e.g. raw mode vs cooked)
+    IOTools.cleanUp(); //ensure that input goes back to normal (e.g. raw mode vs cooked)
   } //end main()
 } //end class
