@@ -33,6 +33,15 @@ public class Display {
     int i,j;
     String printStr = "";
     String os = System.getProperty("os.name");
+    try{
+      if ( os.indexOf("Windows")> -1){
+        new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();	    
+      }
+      else
+        printStr += "[H[J";
+    }
+    catch (Exception e){}
+ 
     printStr += "|" + eLine + "|\n";
     printStr += "| Score: " + tick;
     for(i = 0; i < 100 - ((" Score: " + tick).length()); i++) {
@@ -47,14 +56,6 @@ public class Display {
       printStr += "|\n";
     }
     tick++;
-    try{
-	if ( os.indexOf("Windows")> -1){
-	    new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();	    
-	}
-	else
-	    Runtime.getRuntime().exec("clear");
-    }
-    catch (Exception e){}
     
     return printStr;
   }
