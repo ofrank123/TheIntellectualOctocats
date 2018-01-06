@@ -44,10 +44,5 @@ public class IOTools {
   }
 */
 
-  public static void cleanUp()
-    throws InterruptedException, IOException {
-    //Switch into cooked mode (wait for ENTER/RETURN key)
-    String[] cookedCmd = {"/bin/sh", "-c", "stty cooked </dev/tty"};
-    Runtime.getRuntime().exec(cookedCmd).waitFor();
-  }
+ 
 }

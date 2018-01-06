@@ -88,12 +88,7 @@ public class Run {
     }
   }
 
-  private static void cleanUp()
-    throws InterruptedException, IOException {
-    //Switch into cooked mode (wait for ENTER/RETURN key)
-    String[] cookedCmd = {"/bin/sh", "-c", "stty cooked </dev/tty"};
-    Runtime.getRuntime().exec(cookedCmd).waitFor();
-  }
+
 
   //Entry point
   public static void main( String[] args )
@@ -115,6 +110,6 @@ public class Run {
       //running = false; //only play one game
     }
 
-    IOTools.cleanUp(); //ensure that input goes back to normal (e.g. raw mode vs cooked)
+  
   } //end main()
 } //end class
