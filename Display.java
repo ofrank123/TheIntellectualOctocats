@@ -31,7 +31,8 @@ public class Display {
 
   public String toString() {
     int i,j;
-    String printStr = "[H[J \n";
+    String printStr = "";
+    String os = System.getProperty("os.name");
     printStr += "|" + eLine + "|\n";
     printStr += "| Score: " + tick;
     for(i = 0; i < 100 - ((" Score: " + tick).length()); i++) {
@@ -46,6 +47,15 @@ public class Display {
       printStr += "|\n";
     }
     tick++;
+    try{
+	if ( os.indexOf("Windows 10")> -1){
+	    new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();	    
+	}
+	else
+	    Runtime.getRuntime().exec("clear");
+    }
+    catch (Exception e){}
+    
     return printStr;
   }
 }
