@@ -1,6 +1,5 @@
 #class files
-*.class
-!*/com/*
+/*.class
 
 # Log file
 *.log
