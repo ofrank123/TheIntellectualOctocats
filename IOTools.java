@@ -7,7 +7,16 @@ public class IOTools {
     return sc.next();
   }
 
-
+  public static boolean checkSpace() {
+	try {
+		return RawConsoleInput.read(false) == 32;
+	} catch (IOException e) {
+		System.out.println("IOException");
+		return false;
+	}
+  }	
+  
+  /* POSIX ONLY!!!!
   public static boolean checkSpace()
     throws InterruptedException {
     try {
@@ -33,6 +42,7 @@ public class IOTools {
       return false;
     }
   }
+*/
 
   public static void cleanUp()
     throws InterruptedException, IOException {
