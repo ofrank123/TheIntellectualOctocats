@@ -48,7 +48,7 @@ public class Display {
     }
     tick++;
     try{
-	if ( os.indexOf("Windows 10")> -1){
+	if ( os.indexOf("Windows")> -1){
 	    new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();	    
 	}
 	else
