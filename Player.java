@@ -22,12 +22,21 @@ public class Player extends Entity {
   }
 
   //cX >= this.location[0] && cX <= this.location + 3
-  public boolean colliding(Cactus cactus) {
-    return ((cactus.getX() >= this.location[0] &&
-             cactus.getX() <= this.location[0] + 3) ||
-            (cactus.getX()+1 >= this.location[0] &&
-             cactus.getX()+1 <= this.location[0] +3)) &&
-      this.location[1] > cactus.getY() - 4;
+  public boolean colliding(Entity entity) {
+      if (entity instanceof Cactus){
+	  return ((entity.getX() >= this.location[0] &&
+		   entity.getX() <= this.location[0] + 3) ||
+		  (entity.getX()+1 >= this.location[0] &&
+		   entity.getX()+1 <= this.location[0] +3)) &&
+	      this.location[1] > entity.getY() - 4;
+      }
+      else{
+	  return ((entity.getX() >= this.location[0] &&
+		   entity.getX() <= this.location[0] + 3) ||
+		  (entity.getX()+1 >= this.location[0] &&
+		   entity.getX()+1 <= this.location[0] +3)) &&
+	      this.location[1] > entity.getY() - 3 && this.location[1] < entity.getY() + 2;
+      }
   }
 
   public void jump(int jumpD) {

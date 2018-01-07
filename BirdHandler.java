@@ -1,0 +1,36 @@
+import java.util.ArrayList;
+
+public class BirdHandler extends EntityHandler{
+    public BirdHandler(Display disply){
+	init(display);
+    }
+    public void init(Display display){
+	this.display = display;
+	nextE = (int) ((Math.random()*45) + 15);//spawns between 45and60seconds
+	entities.clear();
+    }
+    public void updateEntities(){
+	int i;
+	Bird thisB;
+	for(i = 0; i < entities.size(); i++){
+	    thisB = (Bird) entities.get(i);
+	    thisB.move(-1, 0);
+	    thisB.draw();
+	    if(thisB.outOfBounds())
+		entities.remove(thisB);
+	}
+    }
+    public boolean detectCollision(Player player){
+	for (Entity bird: entities)
+	    if(player.colliding((Bird) bird))
+		return true;
+	return false;
+    }
+    public void spawnEntity(){
+	nextE--;
+	if(nextE == 0){
+	    entities.add(new Bird(97, 8, display));
+	    nextE = (int) ((Math.random()*45)+ 15);
+	}
+    }
+}
