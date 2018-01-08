@@ -6,7 +6,6 @@ public class BirdHandler extends EntityHandler{
     }
     public void init(Display display){
 	this.display = display;
-	nextE = (int) ((Math.random()*45) + 15);//spawns between 45and60seconds
 	entities.clear();
     }
     public void updateEntities(){

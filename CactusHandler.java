@@ -15,7 +15,6 @@ public class CactusHandler extends EntityHandler {
   //Initialize the cactus handler
   public void init(Display display) {
     this.display = display;
-    nextE = (int) ((Math.random()*30) + 15); //each cactus spawns between 15 and 45 ticks of one another
     entities.clear(); //clears all cacti currently in list
   }
 

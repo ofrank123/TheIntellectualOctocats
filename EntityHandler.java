@@ -5,12 +5,12 @@ import java.util.ArrayList;
  */
 
 public abstract class EntityHandler {
-  protected ArrayList<Entity> entities = new ArrayList<>(); //list of all entities to be drawn
-  protected Display display;
-  protected int nextE; //ticks until next spawn
-
-  public abstract void init(Display display);
-  public abstract void updateEntities();
-  public abstract void spawnEntity();
-  public abstract boolean detectCollision(Player player);
+    protected ArrayList<Entity> entities = new ArrayList<>(); //list of all entities to be drawn
+    protected Display display;
+    protected static int nextE = 45; //ticks until next spawn
+    
+    public abstract void init(Display display);
+    public abstract void updateEntities();
+    public abstract void spawnEntity();
+    public abstract boolean detectCollision(Player player);
 }
