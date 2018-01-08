@@ -59,4 +59,9 @@ public class Display {
     
     return printStr;
   }
+
+  //score getter
+  public int getScore() {
+    return tick;
+  }
 }
