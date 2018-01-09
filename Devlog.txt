@@ -1,0 +1,44 @@
+﻿Devlog for Terminal Jumper
+By TheIntellectualOctocats (Oliver Frank, Shayan Chowdhury, Peter Cwalina)
+
+
+12/20/2017
+* Initial commit to the repository.
+
+
+12/29/2017
+* First working prototype.
+* Basic display matrix implemented for graphics.
+* Utilizing high level console modes (raw and cooked mode) to wait for spacebar input for jumping.
+* Randomly generated cacti added. 
+* Version 1.0 live!
+
+
+12/30/2017
+* Cleaned up locations.
+* Added multiple games.
+
+
+01/02/2017
+* Minor visual changes (line border around game display).
+* Added handling of cacti after they are off-screen (utilizing Java’s garbage collector).
+* Minor reorganization. 
+
+
+01/06/2017
+* Successfully overcame the lack of Windows functionality by collecting raw console input from cmd. 
+* Utilizing an external library called Java Native Access (JNA) to do so.
+* Fixed some terminal clearing issues on Windows.
+* Fixed POSIX clearing as well. 
+
+
+01/07/2017
+* Added birds to the game.
+* Fixed birds spawning from behind cacti.
+* Issue: Hitboxes for the birds seem to be a tad bit broken.
+
+
+01/08/2017
+* Added HighScoring system as well as csv labeled SaveData.
+* Started the foundation of a shop and inventory system.
+* Issue: Game requires SaveData file to run. Need to add the creation of a file if it doesn’t exist.
