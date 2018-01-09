@@ -1,0 +1,14 @@
+TheIntellectualOctocats - Oliver Frank, Shayan Chowdhury, Peter Cwalina
+APCS1 pd2
+HW64 -- Checklist Manifesto
+2018-01-08
+
+To-Do:
+Make the SaveData system more foolproof.
+Fix any errors and optimize the game for running in the terminal/cmd. 
+Add a shop/inventory system (already under work).
+Add different difficulty levels (based on speed and frequency of enemies).
+Add different types of enemies.
+Work on making the code more efficient (working on modularity, etc.).
+Make some minor graphical overhauls (perhaps frame animation).
+Test out the game with various variables to make sure there are no loose ends.
