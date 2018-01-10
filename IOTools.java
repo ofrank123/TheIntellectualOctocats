@@ -7,6 +7,11 @@ public class IOTools {
     return sc.next();
   }
 
+  public static String readLine() {
+    Scanner sc = new Scanner(System.in);
+    return sc.nextLine();
+  }
+
   public static boolean checkSpace() {
 	try {
 		return RawConsoleInput.read(false) == 32;

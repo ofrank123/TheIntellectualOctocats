@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.File;
 
 /*
   ================================================
@@ -35,14 +36,20 @@ public class Run {
 	private static BirdHandler BHandler;
 	private static HighScore highScore;
 
+	public static final File save = new File("SaveData.csv");
+
 	//Asks for alias/name of the player before each game
 	private static void namePrompt() {
-		System.out.println("What's yer name, m8io? (no verbosity please)");
-		playerName = IOTools.readString(); //Sets playerName to input
+		System.out.println("What's yer name, m8io?");
+		playerName = IOTools.readLine().replaceAll("[^A-Za-z]+", ""); //Removes any non-alphabetical (A-Z) characters using regular expressions
 	}
 
 	//Actions to be performed at the start of each game
 	private static void newGame() {
+		if (save != null) {
+
+		}
+
 		//(Re)create game
 		namePrompt();
 		display.init(); //reinititialize the display
@@ -89,15 +96,29 @@ public class Run {
 	private static void endGame() throws FileNotFoundException, IOException {
 		jumpD = 0; //reset jumpD
 
-		System.out.println("Congrats, " + playerName + "! Your score was " + display.getScore() + "!"); //Congratulates the player for accomplishments
+		System.out.println("Congrats, " + playerName + "! Your score was " + display.getScore() + "!\n"); //Congratulates the player for accomplishments
 
 		highScore.addScore(playerName, display.getScore()); //adds score to SaveData
 		highScore.instantiate(); //Instantiating the work of the HighScore class
 		System.out.println("The current leaderboard stands at: ");
 		highScore.printScores(); //Prints out the top 5 high scores
 
-		System.out.println("Would you like to keep playing? (y/n)");
+		System.out.println("\nWould ye like to buy something from the shop? (y/n)");
 		boolean answering = true;
+		while (answering) { //make sure question is answered properly before moving on
+			String ans = IOTools.readString(); //read from input
+			if (ans.equals("y")) { //continue playing
+				System.out.println("Shop machine broke. Please come again later.\n");
+				break;
+			} else if (ans.equals("n")) { //stop playing
+				answering = false;
+				break;
+			} else //invalid input, ask question again
+				System.out.println("Invalid input, please enter y or n.");
+		}
+		
+		System.out.println("Would you like to keep playing? (y/n)");
+		answering = true;
 		while (answering) { //make sure question is answered properly before moving on
 			String ans = IOTools.readString(); //read from input
 			if (ans.equals("y")) { //continue playing
@@ -107,8 +128,9 @@ public class Run {
 				running = false;
 				answering = false;
 			} else //invalid input, ask question again
-				System.out.println("Invalid input, please enter y or n");
+				System.out.println("Invalid input, please enter y or n.");
 		}
+
 	}
 
 	//Entry point
@@ -132,4 +154,9 @@ public class Run {
 		}
 
 	} //end main()
+
+	public static String getName() {
+		return playerName;
+	}
+
 } //end class
