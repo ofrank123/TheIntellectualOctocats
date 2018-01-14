@@ -36,13 +36,25 @@ public class Run {
     private static BirdHandler BHandler;
     private static HighScore highScore;
     private static int lifes = 2; //permaneant starting lifes
- 
+    private static String difficulty;
+    private static int sleepTime;
     public static final File save = new File("SaveData.csv");
 
     //Asks for alias/name of the player before each game
     private static void namePrompt() {
 	System.out.println("What's yer name, m8io?");
 	playerName = IOTools.readLine().replaceAll("[^A-Za-z]+", ""); //Removes any non-alphabetical (A-Z) characters using regular expressions
+    }
+    private static void difficultyPrompt(){
+	System.out.println("Choose a difficulty:\n1-easy\n2-normal\n3-Hard");
+	difficulty = IOTools.readString();
+	if (difficulty.equals("1"))
+	    sleepTime = 60;
+	if (difficulty.equals("2"))
+	    sleepTime = 40;
+	if (difficulty.equals("3"))
+	    sleepTime = 20;
+	
     }
 
     //Actions to be performed at the start of each game
@@ -53,6 +65,7 @@ public class Run {
 
 	//(Re)create game
 	namePrompt();
+	difficultyPrompt();
 	display.init(); //reinititialize the display
 	player.init(4, 10, display, lifes); //reinititialize the player
 	CHandler.init(display); //reinitialize the cactusHandler
@@ -93,7 +106,7 @@ public class Run {
 	    player.jump(jumpD);
 
 	    //monitor updates per second
-	    Thread.sleep(60);
+	    Thread.sleep(sleepTime);
 	}
     }
 

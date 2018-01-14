@@ -30,7 +30,11 @@ public class BirdHandler extends EntityHandler{
     public void spawnEntity(){
 	nextE--;
 	if(nextE == 0){
-	    entities.add(new Bird(97, 8, display));
+	    if ((Math.random()* 2) > 1)
+		entities.add(new Bird(97, 8, display));
+	    else
+		entities.add(new Bird(97, 11, display));
+	    
 	    nextE = (int) ((Math.random()*45)+ 15);
 	}
     }
