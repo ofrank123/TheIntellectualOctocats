@@ -21,8 +21,10 @@ public class BirdHandler extends EntityHandler{
     }
     public boolean detectCollision(Player player){
 	for (Entity bird: entities)
-	    if(player.colliding((Bird) bird))
+	    if(player.colliding((Bird) bird)){
+		entities.remove(bird);
 		return true;
+	    }
 	return false;
     }
     public void spawnEntity(){

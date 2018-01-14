@@ -12,12 +12,13 @@ public class Player extends Entity {
   static double money;
 
   //inherits entMatrix,display, and location from Entity
-  public Player(int startX, int startY, Display display) {
-    init(startX, startY, display);
+    public Player(int startX, int startY, Display display,int lifes) {
+	init(startX, startY, display, lifes);
   }
 
-  public void init(int startX, int startY, Display display) {
+    public void init(int startX, int startY, Display display,int lifes) {
     this.display = display;
+    lives = lifes;
     String charStr = " O /|\\ | / \\";
     entMatrix = new char[4][3];
     int cnt = 0;
@@ -41,7 +42,7 @@ public class Player extends Entity {
     } else {
       return ((entity.getX() >= this.location[0] && entity.getX() <= this.location[0] + 3)
           || (entity.getX() + 1 >= this.location[0] && entity.getX() + 1 <= this.location[0] + 3))
-          && this.location[1] > entity.getY() - 3 && this.location[1] < entity.getY() + 2;
+          && this.location[1] > entity.getY() - 2 && this.location[1] < entity.getY() + 1;
     }
   }
 
@@ -75,6 +76,9 @@ public class Player extends Entity {
     }
     return 0;
   }
+    public static int getLives(){
+	return lives;
+    }
 
   //MUTATORS
   public static void save(int s) throws FileNotFoundException, IOException { //Takes score as input
