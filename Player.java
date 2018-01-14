@@ -2,9 +2,12 @@ import java.util.Scanner;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.Writer;
 
 public class Player extends Entity {
   public static final File file = new File("SaveData.csv");
+  static String name;
   static int lives = 1;
   static double money;
 
@@ -54,5 +57,73 @@ public class Player extends Entity {
     if (lives <= 0) {
 
     }
+  }
+
+  //ACCESSORS
+  public static int getMoney() throws FileNotFoundException, IOException {
+    Scanner scanner = new Scanner(file);
+    scanner.nextLine(); //Skip the first (Title) line
+
+    while (scanner.hasNextLine()) {
+      String line = scanner.nextLine();
+      if (line.equals("*")) { //To prevent reading the same line twice
+        break;
+      }
+      if (line.split(",")[0].equals(Run.getName())) {
+        return Integer.parseInt(line.split(",")[2]);
+      }
+    }
+    return 0;
+  }
+
+  //MUTATORS
+  public static void save(int s) throws FileNotFoundException, IOException { //Takes score as input
+    Scanner scanner = new Scanner(file);
+    scanner.nextLine(); //Skip the first (Title) line
+
+    int loot = 0; //Money to be awarded to the player based on their score
+    boolean playerExists = false;
+    String playerData = "";
+
+    while (scanner.hasNextLine()) {
+      String line = scanner.nextLine();
+
+      if (line.equals("*")) { //To prevent reading the same line twice
+        break;
+      }
+
+      if (line.split(",")[0].equals(Run.getName())) { //Checks if entry for playerName already exists 
+        playerExists = true; //EXISTS!
+        playerData = line; //Copying the line string to a temporary playerData
+        loot = Integer.parseInt(line.split(",")[2]); //Getting the money value they already have
+        break;
+      }
+    }
+
+    if (playerExists) {
+      String oText = new Scanner(file).useDelimiter("\\A").next(); //Copies the entire txt file into a string using a delimiter
+
+      if (s > Integer.parseInt(playerData.split(",")[1])) {//If current score is higher than their previous score
+        loot += (int) (s / 7); //Bonus Money for improvement 
+        oText = oText.replace(playerData, (Run.getName() + "," + s + "," + loot)); //Replaces old playerData with new
+      } else {
+        loot += (int) (s / 10);
+        oText = oText.replace(playerData, (Run.getName() + "," + playerData.split(",")[1] + "," + loot)); //Replaces old playerData with new
+      }
+
+      Writer writer = new FileWriter(file);
+      writer.write(oText); 
+      writer.close();
+    } else {
+      loot = (int) (s / 7); //First time playing bonus
+      Writer writer = new FileWriter(file, true); //the second parameter signifies that this is appending to the file instead of copying its contents and returning a slight variation of it
+      writer.write(Run.getName() + "," + s + "," + loot);
+      writer.close();
+    }
+
+  }
+
+  public static int oneUp() {
+    return ++lives;
   }
 }

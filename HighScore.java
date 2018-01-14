@@ -13,7 +13,7 @@ public class HighScore {
     public static final File file = new File("SaveData.csv");
 
     public static void instantiate() throws FileNotFoundException, IOException {
-        
+
         Scanner scanner = new Scanner(file);
         scanner.nextLine(); //Skip the first (Title) line
 
@@ -29,20 +29,14 @@ public class HighScore {
         //printScores();
     }
 
-    public static void addScore(String s, int i) throws FileNotFoundException, IOException {
-        Writer writer = new FileWriter(file, true);
-        writer.write("\n" + s + "," + i);
-        writer.close();
-    }
-
     public static ArrayList<ArrayList<String>> sortScores() {
-        
+
         ArrayList<ArrayList<String>> arry = new ArrayList<ArrayList<String>>(scores.size()); //Instantiation of a 2D ArrayList
 
         int r = 0;
         for (int s : scores.keySet()) {
             arry.add(new ArrayList<String>());
-            arry.get(r).add(""+s);
+            arry.get(r).add("" + s);
             arry.get(r++).add(scores.get(s)); //Post increment operator, increments i after it adds both score and name to the first ArrayList
         }
 
@@ -61,7 +55,7 @@ public class HighScore {
 
     public static void printScores() {
         ArrayList<ArrayList<String>> arry = sortScores();
-        
+
         for (int i = 0; i < 5; i++) {
             System.out.println(arry.get(i).get(1) + " : " + arry.get(i).get(0));
         }

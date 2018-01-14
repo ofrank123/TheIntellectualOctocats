@@ -45,9 +45,9 @@ public class Run {
 	}
 
 	//Actions to be performed at the start of each game
-	private static void newGame() {
-		if (save != null) {
-
+	private static void newGame() throws IOException {
+		if (!save.exists()) {
+			save.createNewFile();
 		}
 
 		//(Re)create game
@@ -88,7 +88,7 @@ public class Run {
 			player.jump(jumpD);
 
 			//monitor updates per second
-			Thread.sleep(40);
+			Thread.sleep(60);
 		}
 	}
 
@@ -98,7 +98,7 @@ public class Run {
 
 		System.out.println("Congrats, " + playerName + "! Your score was " + display.getScore() + "!\n"); //Congratulates the player for accomplishments
 
-		highScore.addScore(playerName, display.getScore()); //adds score to SaveData
+		player.save(display.getScore()); //saves score and money to SaveData
 		highScore.instantiate(); //Instantiating the work of the HighScore class
 		System.out.println("The current leaderboard stands at: ");
 		highScore.printScores(); //Prints out the top 5 high scores
@@ -108,6 +108,7 @@ public class Run {
 		while (answering) { //make sure question is answered properly before moving on
 			String ans = IOTools.readString(); //read from input
 			if (ans.equals("y")) { //continue playing
+				System.out.println("You currently have " + player.getMoney() + " terminal credits.");
 				System.out.println("Shop machine broke. Please come again later.\n");
 				break;
 			} else if (ans.equals("n")) { //stop playing
@@ -155,6 +156,7 @@ public class Run {
 
 	} //end main()
 
+	//ACCESSORS
 	public static String getName() {
 		return playerName;
 	}
