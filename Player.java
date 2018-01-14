@@ -81,11 +81,11 @@ public class Player extends Entity {
     }
 
   //MUTATORS
-  public static void save(int s) throws FileNotFoundException, IOException { //Takes score as input
+  public static void save(int s, int l) throws FileNotFoundException, IOException { //Takes score as input
     Scanner scanner = new Scanner(file);
     scanner.nextLine(); //Skip the first (Title) line
 
-    int loot = 0; //Money to be awarded to the player based on their score
+    int loot = l; //Money to be awarded to the player based on their score
     boolean playerExists = false;
     String playerData = "";
 
@@ -99,7 +99,7 @@ public class Player extends Entity {
       if (line.split(",")[0].equals(Run.getName())) { //Checks if entry for playerName already exists 
         playerExists = true; //EXISTS!
         playerData = line; //Copying the line string to a temporary playerData
-        loot = Integer.parseInt(line.split(",")[2]); //Getting the money value they already have
+        loot += Integer.parseInt(line.split(",")[2]); //Getting the money value they already have
         break;
       }
     }
