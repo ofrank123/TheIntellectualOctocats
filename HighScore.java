@@ -12,7 +12,7 @@ public class HighScore {
     static Hashtable<Integer, String> scores = new Hashtable<Integer, String>();
     public static final File file = new File("SaveData.csv");
 
-    public static void instantiate() throws FileNotFoundException, IOException {
+    public static void init() throws FileNotFoundException, IOException {
 
         Scanner scanner = new Scanner(file);
         scanner.nextLine(); //Skip the first (Title) line

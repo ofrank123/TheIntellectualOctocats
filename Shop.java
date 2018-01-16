@@ -13,31 +13,25 @@ public class Shop {
        
     String badValue = "Thou must entereth a numeral betwixt 1 and 2! \n";
 
-    //        try {
     System.out.println("\nWelcome to me shop! Feel free to pick whatever ye fancy.");
     System.out.println("Ye currently have " +  player.getMoney() + " terminal credits.");
-    System.out.println(" 1) +1 Life (50 credits)");
+    System.out.println(" 1) +1 Life (50 credits)\n 2) +3 Jump Height\n 3) x2 Points ");
 
     int i = Integer.parseInt(IOTools.readString());
     switch (i) {
     case 1:
       if (player.getMoney() >= 50) {
-        System.out.println("Congratulants, yen now have " + player.oneUp() + " more lives!");
+        System.out.println("Congratulants, ye now have " + player.changeLives(1) + " lives!");
         player.save(0, -50);
-        System.out.println("Ye now have " + player.getMoney() + " terminal credits.");
+        System.out.println("Ye now have " + player.getMoney() + " terminal credits.\n");
       } else {
-        System.out.println("Are ye bloody mad? Do I look like a charity? Come back when yer richer.");
+        System.out.println("Are ye bloody mad? Do I look like a charity? Come back when yer richer.\n");
       }
       return;
     default:
       System.out.print(badValue);
       open();
     }
-    // } catch (IOException e) {
-    //     System.out.print(badValue);
-    // } catch (NumberFormatException e) {
-    //     System.out.print(badValue);
-    // }
   }
 
 }

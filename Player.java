@@ -7,9 +7,8 @@ import java.io.Writer;
 
 public class Player extends Entity {
   public static final File file = new File("SaveData.csv");
-  private static String name;
-  private static int lives = 1;
-  private static double money;
+  private String name;
+  private int lives;
 
   //inherits entMatrix,display, and location from Entity
     public Player(int startX, int startY, Display display,int lifes) {
@@ -53,13 +52,6 @@ public class Player extends Entity {
       this.location[1] += 1;
   }
 
-  public void takeDamage() {
-    lives--;
-    if (lives <= 0) {
-
-    }
-  }
-
   public String getName() {
     return name;
   }
@@ -86,15 +78,10 @@ public class Player extends Entity {
     }
     return 0;
   }
-  
-  public int getLives(){
-    return lives;
-  }
 
-  public int setLives(int newLives){
-    int oldLives = lives;
-    lives = newLives;
-    return oldLives;
+  public int changeLives(int change){ //This method really does change lives
+    lives += change;
+    return lives;
   }
   
   //MUTATORS
@@ -142,9 +129,5 @@ public class Player extends Entity {
       writer.close();
     }
 
-  }
-
-  public static int oneUp() {
-    return ++lives;
   }
 }
