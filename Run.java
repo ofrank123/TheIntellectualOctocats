@@ -14,7 +14,7 @@ import java.io.File;
   Piotr Cwalina
   ================================================
   A game similar to Google Chrome's dinosaur jump
-  game, where the player must time their jumps to
+  game, where the must time their jumps to
   make it over cacti (and hopefully other objects
   in later versions). Currently, this is version 2
   of this project with a functional game and player
@@ -32,32 +32,14 @@ public class Run {
 	private static boolean running; //whether or not game is running
 
 	private static Player player;
-	private static String playerName;
 	private static Display display;
 	private static CactusHandler CHandler;
 	private static BirdHandler BHandler;
-	private static int lives = 2; //start with 2 lives
-	private static String difficulty;
+  private static Shop shop;
+  
+  private static int lives = 2; //start with 2 lives
 	private static int sleepTime;
 	public static final File save = new File("SaveData.csv");
-
-	//Asks for alias/name of the player before each game
-	private static void namePrompt() {
-		System.out.println("What's yer name, m8io?");
-		playerName = IOTools.readLine().replaceAll("[^A-Za-z]+", ""); //Removes any non-alphabetical (A-Z) characters using regular expressions
-	}
-
-	private static void difficultyPrompt() {
-		System.out.println("Choose a difficulty:\n1-Easy\n2-Medium\n3-Hard");
-		difficulty = IOTools.readString();
-		if (difficulty.equals("1"))
-			sleepTime = 60;
-		if (difficulty.equals("2"))
-			sleepTime = 40;
-		if (difficulty.equals("3"))
-			sleepTime = 20;
-
-	}
 
 	//Actions to be performed at the start of each game
 	private static void newGame() throws IOException {
@@ -66,8 +48,8 @@ public class Run {
 		}
 
 		//(Re)create game
-		namePrompt();
-		difficultyPrompt();
+		IOTools.namePrompt(player);
+		sleepTime = IOTools.difficultyPrompt();
 		display.init(); //reinititialize the display
 		player.init(4, 10, display, lives); //reinititialize the player
 		CHandler.init(display); //reinitialize the cactusHandler
@@ -80,9 +62,9 @@ public class Run {
 		while (true) {
 			//game should not continue (even by one update) if there is a collision
 			if (CHandler.detectCollision(player) || BHandler.detectCollision(player)) { //if there is a collision then stop the game
-				player.lives -= 1;
+				player.setLives(player.getLives() - 1);
 			}
-			if (player.lives == 0) {
+			if (player.getLives() == 0) {
 				break;
 			}
 			//visuals
@@ -96,7 +78,7 @@ public class Run {
 			CHandler.updateEntities(); //move and draw cacti
 			BHandler.updateEntities();//move and draw birds
 			player.draw(); //draw the player to the display matrix
-			display.setLives(player.lives);
+			display.setLives(player.getLives());
 			System.out.println(display); //draw the display to the console
 			//Check if spacebar is pressed and not already jumping
 			if ((IOTools.checkSpace() && jumpD == 0) || (0 < jumpD && jumpD <= 12))
@@ -116,7 +98,7 @@ public class Run {
 	private static void endGame() throws FileNotFoundException, IOException {
 		jumpD = 0; //reset jumpD
 
-		System.out.println("Congrats, " + playerName + "! Your score was " + display.getScore() + "!\n"); //Congratulates the player for accomplishments
+		System.out.println("Congrats, " + player.getName() + "! Your score was " + display.getScore() + "!\n"); //Congratulates the player for accomplishments
 
 		player.save(display.getScore(), 0); //saves score and money to SaveData
 		HighScore.instantiate(); //Instantiating the work of the HighScore class
@@ -129,7 +111,7 @@ public class Run {
 			String ans = IOTools.readString(); //read from input
 			if (ans.equals("y")) { //continue playing
 				System.out.println("You currently have " + player.getMoney() + " terminal credits.");
-				Shop.open();
+				shop.open();
 				break;
 			} else if (ans.equals("n")) { //stop playing
 				answering = false;
@@ -161,7 +143,8 @@ public class Run {
 		player = new Player(4, 10, display, lives);
 		CHandler = new CactusHandler(display);
 		BHandler = new BirdHandler(display);
-
+    shop = new Shop(player);
+    
 		running = true;
 		//run games until player says n
 		while (running) {
@@ -174,11 +157,5 @@ public class Run {
 			//running = false; //only play one game
 		}
 
-	} //end main()
-
-	//ACCESSORS
-	public static String getName() {
-		return playerName;
-	}
-
+	} //end main
 } //end class

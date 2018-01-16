@@ -7,9 +7,9 @@ import java.io.Writer;
 
 public class Player extends Entity {
   public static final File file = new File("SaveData.csv");
-  static String name;
-  static int lives = 1;
-  static double money;
+  private static String name;
+  private static int lives = 1;
+  private static double money;
 
   //inherits entMatrix,display, and location from Entity
     public Player(int startX, int startY, Display display,int lifes) {
@@ -60,8 +60,18 @@ public class Player extends Entity {
     }
   }
 
+  public String getName() {
+    return name;
+  }
+
+  public String setName(String newName) {
+    String oldName = name;
+    name = newName;
+    return oldName;
+  }
+  
   //ACCESSORS
-  public static int getMoney() throws FileNotFoundException, IOException {
+  public int getMoney() throws FileNotFoundException, IOException {
     Scanner scanner = new Scanner(file);
     scanner.nextLine(); //Skip the first (Title) line
 
@@ -70,18 +80,25 @@ public class Player extends Entity {
       if (line.equals("*")) { //To prevent reading the same line twice
         break;
       }
-      if (line.split(",")[0].equals(Run.getName())) {
+      if (line.split(",")[0].equals(this.name)) {
         return Integer.parseInt(line.split(",")[2]);
       }
     }
     return 0;
   }
-    public static int getLives(){
-	return lives;
-    }
+  
+  public int getLives(){
+    return lives;
+  }
 
+  public int setLives(int newLives){
+    int oldLives = lives;
+    lives = newLives;
+    return oldLives;
+  }
+  
   //MUTATORS
-  public static void save(int s, int l) throws FileNotFoundException, IOException { //Takes score as input
+  public void save(int s, int l) throws FileNotFoundException, IOException { //Takes score as input
     Scanner scanner = new Scanner(file);
     scanner.nextLine(); //Skip the first (Title) line
 
@@ -96,7 +113,7 @@ public class Player extends Entity {
         break;
       }
 
-      if (line.split(",")[0].equals(Run.getName())) { //Checks if entry for playerName already exists 
+      if (line.split(",")[0].equals(this.name)) { //Checks if entry for playerName already exists 
         playerExists = true; //EXISTS!
         playerData = line; //Copying the line string to a temporary playerData
         loot += Integer.parseInt(line.split(",")[2]); //Getting the money value they already have
@@ -109,10 +126,10 @@ public class Player extends Entity {
 
       if (s > Integer.parseInt(playerData.split(",")[1])) {//If current score is higher than their previous score
         loot += (int) (s / 7); //Bonus Money for improvement 
-        oText = oText.replace(playerData, (Run.getName() + "," + s + "," + loot)); //Replaces old playerData with new
+        oText = oText.replace(playerData, (this.name + "," + s + "," + loot)); //Replaces old playerData with new
       } else {
         loot += (int) (s / 10);
-        oText = oText.replace(playerData, (Run.getName() + "," + playerData.split(",")[1] + "," + loot)); //Replaces old playerData with new
+        oText = oText.replace(playerData, (this.name + "," + playerData.split(",")[1] + "," + loot)); //Replaces old playerData with new
       }
 
       Writer writer = new FileWriter(file);
@@ -121,7 +138,7 @@ public class Player extends Entity {
     } else {
       loot = (int) (s / 7); //First time playing bonus
       Writer writer = new FileWriter(file, true); //the second parameter signifies that this is appending to the file instead of copying its contents and returning a slight variation of it
-      writer.write(Run.getName() + "," + s + "," + loot);
+      writer.write(this.name + "," + s + "," + loot);
       writer.close();
     }
 

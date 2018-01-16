@@ -1,4 +1,3 @@
-
 /*
   Entity class, superclass for all objects that needs to change
   position in game (everything besides floor).  An Entity's

@@ -11,6 +11,8 @@
 //
 // Home page: http://www.source-code.biz/snippets/java/RawConsoleInput
 
+// Modified by Oliver Frank, 2017
+
 import java.io.InputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;

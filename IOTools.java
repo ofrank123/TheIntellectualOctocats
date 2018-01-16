@@ -21,6 +21,25 @@ public class IOTools {
 	}
   }	
   
+	//Asks for alias/name of the player before each game
+	public static void namePrompt(Player player) {
+		System.out.println("What's yer name, m8io?");
+		player.setName(IOTools.readLine().replaceAll("[^A-Za-z]+", "")); //Removes any non-alphabetical (A-Z) characters using regular expressions
+	}
+
+	public static int difficultyPrompt() {
+		System.out.println("Choose a difficulty:\n1-Easy\n2-Medium\n3-Hard");
+		String difficulty = IOTools.readString();
+    int sleepTime = 30;
+    if (difficulty.equals("1"))
+			sleepTime = 60;
+		if (difficulty.equals("2"))
+			sleepTime = 40;
+		if (difficulty.equals("3"))
+			sleepTime = 20;
+    return sleepTime;
+	}
+
   /* POSIX ONLY!!!!
   public static boolean checkSpace()
     throws InterruptedException {

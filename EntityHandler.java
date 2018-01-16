@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-
 /*
   Class deals with keeping track of, creating, and moving entities
  */
