@@ -2,8 +2,6 @@ import java.util.Scanner;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.File;
-import java.io.FileWriter;
-import java.io.Writer;
 
 public class Player extends Entity {
   public static final File file = new File("SaveData.csv");
@@ -119,14 +117,10 @@ public class Player extends Entity {
         oText = oText.replace(playerData, (this.name + "," + playerData.split(",")[1] + "," + loot)); //Replaces old playerData with new
       }
 
-      Writer writer = new FileWriter(file);
-      writer.write(oText); 
-      writer.close();
+      IOTools.write(oText, false);
     } else {
       loot = (int) (s / 7); //First time playing bonus
-      Writer writer = new FileWriter(file, true); //the second parameter signifies that this is appending to the file instead of copying its contents and returning a slight variation of it
-      writer.write(this.name + "," + s + "," + loot);
-      writer.close();
+      IOTools.write(this.name + "," + s + "," + loot + "\n", true); //the second parameter signifies that this is appending to the file instead of copying its contents and returning a slight variation of it
     }
 
   }

@@ -44,8 +44,8 @@ public class Display {
 
 		printStr += "|" + eLine + "|\n";
 		printStr += "| Score: " + tick;
-		printStr += " lives: " + lives;
-		for (i = 0; i < 100 - ((" Score: " + tick + " lives: " + lives).length()); i++) {
+		printStr += " Lives: " + lives;
+		for (i = 0; i < 100 - ((" Score: " + tick + "Lives: " + lives).length()); i++) {
 			printStr += " ";
 		}
 		printStr += "|\n";

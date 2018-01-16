@@ -1,7 +1,5 @@
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.Writer;
 import java.util.Scanner;
 import java.io.File;
 import java.util.Hashtable;
@@ -55,8 +53,7 @@ public class HighScore {
 
     public static void printScores() {
         ArrayList<ArrayList<String>> arry = sortScores();
-
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < arry.size() && i < 5; i++) {
             System.out.println(arry.get(i).get(1) + " : " + arry.get(i).get(0));
         }
     }

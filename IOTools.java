@@ -1,7 +1,13 @@
 import java.util.Scanner;
 import java.io.IOException;
+import java.io.FileNotFoundException;
+import java.io.File;
+import java.io.Writer;
+import java.io.FileWriter;
 
-public class IOTools {
+public class IOTools{
+  public static final File save = new File("SaveData.csv");
+
   public static String readString() {
     Scanner sc = new Scanner(System.in);
     return sc.next();
@@ -19,17 +25,30 @@ public class IOTools {
 		System.out.println("IOException");
 		return false;
 	}
-  }	
+  }
   
+  public static void write(String s, boolean a) throws FileNotFoundException, IOException {
+    Writer writer = new FileWriter(save, a); //the second parameter signifies that this is appending to the file instead of copying its contents and returning a slight variation of it
+    writer.write(s);
+    writer.close();
+  }
+  
+  public static void checkSave() throws FileNotFoundException, IOException {
+    if (!save.exists()) {
+      save.createNewFile();
+      write("Name,Highscore,Money\n", false);
+    }
+  }
+
 	//Asks for alias/name of the player before each game
 	public static void namePrompt(Player player) {
 		System.out.println("What's yer name, m8io?");
-		player.setName(IOTools.readLine().replaceAll("[^A-Za-z]+", "")); //Removes any non-alphabetical (A-Z) characters using regular expressions
+		player.setName(readLine().replaceAll("[^A-Za-z]+", "")); //Removes any non-alphabetical (A-Z) characters using regular expressions
 	}
 
 	public static int difficultyPrompt() {
 		System.out.println("Choose a difficulty:\n1-Easy\n2-Medium\n3-Hard");
-		String difficulty = IOTools.readString();
+		String difficulty = readString();
     int sleepTime = 30;
     if (difficulty.equals("1"))
 			sleepTime = 60;

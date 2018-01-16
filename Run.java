@@ -43,10 +43,8 @@ public class Run {
 
 	//Actions to be performed at the start of each game
 	private static void newGame() throws IOException {
-		if (!save.exists()) {
-			save.createNewFile();
-		}
-
+		IOTools.checkSave();
+		Art.titleCard();
 		//(Re)create game
 		IOTools.namePrompt(player);
 		shopPrompt();
