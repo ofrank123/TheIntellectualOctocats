@@ -136,10 +136,10 @@ public class Run {
 	while (answering) { //make sure question is answered properly before moving on
 	    String ans = IOTools.readString(); //read from input
 	    if (ans.equals("y")) { //continue playing
-		System.out.println("You currently have " + player.getMoney() + " terminal credits.\n");
 		shop.open();
 		break;
-	    } else if (ans.equals("n")) { //stop playing
+		} else if (ans.equals("n")) { //stop playing
+			System.out.println();
 		answering = false;
 		break;
 	    } else //invalid input, ask question again
@@ -148,19 +148,7 @@ public class Run {
     }
 
     private static void playAgainPrompt() {
-	System.out.println("\nWould you like to keep playing? (y/n)");
-	boolean answering = true;
-	while (answering) { //make sure question is answered properly before moving on
-	    String ans = IOTools.readString(); //read from input
-	    if (ans.equals("y")) { //continue playing
-		running = true;
-		answering = false;
-	    } else if (ans.equals("n")) { //stop playing
 		running = false;
-		answering = false;
-	    } else //invalid input, ask question again
-		System.out.println("Invalid input, please enter y or n.");
-	}
-
+		System.out.println("\nThanks for playing! Hope you had fun!");
     }
 } //end class

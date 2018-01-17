@@ -3,7 +3,9 @@ public class Display {
     private String eLine = ""; //100 equals in a string
     private int tick;
     private int lives = 1;
-    private int doubleScore = 0;
+	private boolean doubleScore = false;
+	private boolean discoMode = false;
+	private String randoCol;
 
     //initialize display
     public Display() {
@@ -15,6 +17,7 @@ public class Display {
     public void init() {
 	clearDisplay();
 	tick = 0;
+	randoCol = Art.ANSI_COLORS.get((int)(Math.random() * Art.ANSI_COLORS.size()));
     }
 
     public void clearDisplay() {
@@ -43,12 +46,17 @@ public class Display {
 	} catch (Exception e) {
 	}
 
+	if (discoMode) { //Changes the colors per update
+		randoCol = Art.ANSI_COLORS.get((int)(Math.random() * Art.ANSI_COLORS.size()));
+	}
+
+	printStr += randoCol;
 	printStr += "|" + eLine + "|\n";
-	printStr += "| Score: " + getScore();
-	printStr += " Lives: " + lives;
-	for (i = 0; i < 100 - ((" Score: " + getScore() + "Lives: " + lives).length()); i++) {
+	printStr += "| " + Art.ANSI_GREEN + "Score: " + getScore() + randoCol;
+	for (i = 0; i < 92 - ((" Score: " + getScore() + "" + lives).length()); i++) {
 	    printStr += " ";
 	}
+	printStr += Art.ANSI_RED + "Lives: " + lives + " " + randoCol;
 	printStr += "|\n";
 	printStr += "|" + eLine + "|\n";
 	for (i = 0; i < dispMatrix.length; i++) {
@@ -59,18 +67,23 @@ public class Display {
 	}
 	tick++;
 
+	printStr += Art.ANSI_RESET;
 	return printStr;
     }
 
     public void setLives(int lifes) {
 	lives = lifes;
     }
-    public void buyDoubleScore(int i){
+    public void buyDoubleScore(boolean i){
 	doubleScore = i;
-    }
+	}
+	public void buyDiscoMode(boolean i){
+		discoMode = i;
+	}
+	
     //score getter
     public int getScore() {
-	if(doubleScore == 0){
+	if(!doubleScore){
 	    return tick;
 	}
 	else{
